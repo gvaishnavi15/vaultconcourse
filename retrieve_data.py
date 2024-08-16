@@ -39,9 +39,9 @@ for i in df_table.iloc[:, 1:].columns:
     df_table[i] = df_table[i].str.replace(',', '').str.replace('%', '/100').apply(safe_eval)
  
 db_host = "192.168.3.54"
-db_name = "postgres"
-db_user = "postgres"
-db_password = "vaishnavi"
+db_name = "concourse"
+db_user = "concourse_user"
+db_password = "concourse_pass"
 db_port = "5432"
  
 engine = create_engine(f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
