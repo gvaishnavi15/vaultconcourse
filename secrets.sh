@@ -2,7 +2,7 @@
 
 # selecting authentication method as userpass by default it is token
 export VAULT_ADDR='http://192.168.3.54:8200'
-export VAULT_TOKEN=hvs.XMsDxvmQhWHMbDpfhxbA2ZlQ
+export VAULT_TOKEN=test
 # vault login -method=userpass username=vaishnavi password=vaishnavi
 
 # retrieving secrets from the vault
