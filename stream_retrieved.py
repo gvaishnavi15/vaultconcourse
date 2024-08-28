@@ -3,10 +3,6 @@ import pandas as pd
 from bs4 import BeautifulSoup as bs
 from sqlalchemy import create_engine
 
-# Replace with your Screener.in login credentials
-email = "your_email@example.com"
-password = "your_password"
-
 # Start a session
 session = requests.Session()
 
@@ -73,6 +69,12 @@ if response.url == "https://www.screener.in/dash/":
         # Load DataFrame into PostgreSQL database
         df.to_sql('profit_loss_table_data', con=engine, index=False, if_exists='replace')
         print("Data loaded successfully into PostgreSQL database!")
+        
+    else:
+        print("Failed to retrieve Reliance data. Status Code:", search_response.status_code)
+
+else:
+    print("Login failed. Response URL:", response.url)
         
     else:
         print("Failed to retrieve Reliance data. Status Code:", search_response.status_code)
