@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup as bs
 from sqlalchemy import create_engine
+import os
 
 email=os.getenv("EMAIL")
 password=os.getenv("PASSWORD")
