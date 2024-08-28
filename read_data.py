@@ -1,44 +1,35 @@
 import pandas as pd
 import openpyxl
 import os
-
-def read_profit_and_loss_data(file_name):
-    # Check if the file exists
-    if file_name and os.path.exists(file_name):
-        try:
-            # Load the Excel file using openpyxl
-            workbook = openpyxl.load_workbook(file_name, data_only=True)
-
-            # Select the 'datasheet' sheet
-            sheet = workbook['datasheet']
-
-            # Initialize an empty list to collect rows of the "Profit & Loss" data
-            data = []
-            start_collecting = False
-
-            # Iterate through the rows in the sheet
-            for row in sheet.iter_rows(values_only=True):
-                # Check if this row contains the "Profit & Loss" marker
-                if start_collecting:
-                    if all(cell is None for cell in row):
-                        break # Stop if an empty row is found after starting data collection
-                    data.append(row)
-                if 'Profit & Loss' in row:
-                    start_collecting = True # Start collecting data from the next row
-
-            # Convert the collected data into a DataFrame
-            df_profit_loss = pd.DataFrame(data[1:], columns=data[0]) # Assumes the first row after marker is header
-
-            # Display the first few rows
-            print("Profit and Loss Data:")
-            print(df_profit_loss.head())
-
-        except Exception as e:
-            print(f"Error reading Excel file or extracting Profit and Loss tab: {e}")
-    else:
-        print(f"File {file_name} not found or path is incorrect.")
-
+from sqlalchemy import create_engine
+ 
+def read_profit_and_loss_tab(file_name):
+   if file_name:
+       try:
+           # Load only the "Profit and Loss" data from the "Data Sheet" and read columns from A to K, skip first 15 rows, and read the next 15 rows
+           profit_and_loss_df = pd.read_excel(file_name, sheet_name="Data Sheet", usecols='A:K', skiprows=15, nrows=15)
+           # Set 'Report Date' as the index
+           profit_and_loss_df.set_index("Report Date", inplace=True)
+           # Transpose the data (rows become columns and columns become rows)
+           profit_and_loss_df = profit_and_loss_df.transpose()
+           # Add a new column 'company' by stripping the '.xlsx' extension from the file name
+           profit_and_loss_df["company"] = file_name.strip(".xlsx")
+           print(f"Profit and Loss Data from {file_name}:")
+           print(profit_and_loss_df)
+         
+         
+           try:
+               profit_and_loss_df.to_csv('profit_loss.csv', mode='x', index=True, header=True)
+           except FileExistsError:
+               profit_and_loss_df.to_csv('profit_loss.csv', mode='a', index=True, header=False)
+           # Connect to PostgreSQL database and send the data
+           engine = create_engine('postgresql://vaishnavi:vaishnavi@localhost:5432/reliance_profitloss')
+           profit_and_loss_df.to_sql('profit_loss_data', engine, if_exists='append', index=True)
+           print("Data successfully loaded into PostgreSQL")
+       except Exception as e:
+           print(f"Error reading Excel file or extracting Profit and Loss data: {e}")
+   else:
+       print(f"File {file_name} not found")
 if __name__ == '__main__':
-    # Path to the downloaded Excel file
-    file_name = os.path.join(os.getcwd(), "Reliance Industr.xlsx") # Adjust filename as necessary
-    read_profit_and_loss_data(file_name)
+   file_name = "C:/Users/Guest Users/Downloads/Reliance Industr.xlsx"
+   read_profit_and_loss_tab(file_name)
