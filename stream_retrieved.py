@@ -3,6 +3,11 @@ import pandas as pd
 from bs4 import BeautifulSoup as bs
 from sqlalchemy import create_engine
 
+email=os.getenv("EMAIL")
+password=os.getenv("PASSWORD")
+pg_user=os.getenv("PG_USER")
+pg_pass=os.getenv("PG_PASS")
+pg_db=os.getenv("PG_DB")
 
 # Start a session
 session = requests.Session()
