@@ -23,7 +23,7 @@ def read_profit_and_loss_tab(file_name):
            except FileExistsError:
                profit_and_loss_df.to_csv('profit_loss.csv', mode='a', index=True, header=False)
            # Connect to PostgreSQL database and send the data
-           engine = create_engine('postgresql://vaishnavi:vaishnavi@localhost:5432/reliance_profitloss')
+           engine = create_engine('postgresql://vaishnavi:vaishnavi@localhost:5432/reliance_database')
            profit_and_loss_df.to_sql('profit_loss_data', engine, if_exists='append', index=True)
            print("Data successfully loaded into PostgreSQL")
        except Exception as e:
@@ -31,5 +31,5 @@ def read_profit_and_loss_tab(file_name):
    else:
        print(f"File {file_name} not found")
 if __name__ == '__main__':
-   file_name = "C:/Users/Guest Users/Downloads/Reliance Industr.xlsx"
+   file_name = "C:/Users/Other User/Downloads/Reliance Industr.xlsx"
    read_profit_and_loss_tab(file_name)
