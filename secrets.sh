@@ -1,5 +1,5 @@
 export VAULT_ADDR='http://192.168.3.54:8200'
-export VAULT_TOKEN='myroot'
+export VAULT_TOKEN='test'
 
 EMAIL=$(vault kv get -field=userid screener/path)
 PASSWORD=$(vault kv get -field=password screener/path)
