@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 session = requests.Session()
 
 # Get the login page to retrieve the CSRF token
-login_url = "https://www.screener.in/login/"
+login_url = "https://www.screener.in/login/?"
 login_page = session.get(login_url)
 soup = bs(login_page.content, 'html.parser')
 
