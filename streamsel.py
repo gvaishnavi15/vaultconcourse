@@ -29,7 +29,7 @@ chrome_options.add_experimental_option("prefs", prefs)
 # service = Service('/usr/local/bin/chromedriver')  # Replace with the path to your ChromeDriver
  
 # Initialize WebDriver
-# driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome(options=chrome_options)
  
 try:
     driver.get("https://www.screener.in/")
